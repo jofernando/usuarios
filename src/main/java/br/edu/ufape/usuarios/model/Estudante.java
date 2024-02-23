@@ -8,9 +8,9 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Getter
 @Setter
+@Entity
 public class Estudante extends Usuario {
 	private String matricula;
 }
