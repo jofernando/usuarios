@@ -7,10 +7,25 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: app_lmts
+            authorization-grant-type: authorization_code
+            scope: openid
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/lmts
+            user-name-attribute: preferred_username
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/lmts/protocol/openid-connect/certs
 server:
-  port: 8081
+  port: 8083
 springdoc:
   api-docs:
-    path: /api/docs
+    path: /api-doc/docs
   swagger-ui:
-    path: /api/swagger.html
+    path: /api-doc/swagger.html
