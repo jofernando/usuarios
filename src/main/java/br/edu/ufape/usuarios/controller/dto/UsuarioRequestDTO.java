@@ -13,6 +13,8 @@ import java.time.LocalDate;
 public class UsuarioRequestDTO
 {
     private String login;
+    // id do keycloak
+    private String userId;
     private String senha;
     private String nome;
     private String curso;

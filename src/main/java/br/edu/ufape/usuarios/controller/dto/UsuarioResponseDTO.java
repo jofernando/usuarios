@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UsuarioResponseDTO {
     private Long id;
+    // id do keycloak
+    private String userId;
     private String login;
     private String nome;
     private boolean gestao;

@@ -22,6 +22,9 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	// id do keycloak
+	@NotBlank
+	private String userId;
 	@Column(unique = true)
 	@NotBlank
 	private String login;
