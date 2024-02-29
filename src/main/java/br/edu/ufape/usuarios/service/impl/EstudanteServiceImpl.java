@@ -3,7 +3,6 @@ package br.edu.ufape.usuarios.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.usuarios.model.Estudante;
@@ -13,9 +12,13 @@ import br.edu.ufape.usuarios.service.EstudanteService;
 @Service
 public class EstudanteServiceImpl implements EstudanteService {
 
+	private final EstudanteRepository estudanteRepository;
+
 	@Autowired
-	private EstudanteRepository estudanteRepository;
-	
+	public EstudanteServiceImpl(EstudanteRepository estudanteRepository) {
+		this.estudanteRepository = estudanteRepository;
+	}
+
 	public List<Estudante> recuperarTodos() {
 		return estudanteRepository.findAll();
 	}
@@ -23,7 +26,7 @@ public class EstudanteServiceImpl implements EstudanteService {
 	public Estudante recuperar(Long id) {
 		return estudanteRepository.findById(id)
 			.orElseThrow(
-				() -> new ResourceNotFoundException(mensagemNotFound(id))
+				() -> new IllegalArgumentException(mensagemNotFound(id))
 			);
 	}
 	
@@ -32,22 +35,22 @@ public class EstudanteServiceImpl implements EstudanteService {
 	}
 	
 	public Estudante atualizar(Long id, Estudante estudanteRequest) {
-		Estudante estudante = estudanteRepository.findById(id)
+		estudanteRepository.findById(id)
 			.orElseThrow(
-				() -> new ResourceNotFoundException(mensagemNotFound(id))
+				() -> new IllegalArgumentException(mensagemNotFound(id))
 			);
-		// atualizar dados do estudante com os dados que vieram do request
-		return estudanteRepository.save(estudante);
+		estudanteRequest.setId(id);
+		return estudanteRepository.save(estudanteRequest);
 	}
 	
 	public void deletar(Long id) {
 		boolean existe = estudanteRepository.existsById(id);
 		if (! existe) 
-			throw new ResourceNotFoundException(mensagemNotFound(id));
+			throw new IllegalArgumentException(mensagemNotFound(id));
 		estudanteRepository.deleteById(id);
 	}
 	
 	private String mensagemNotFound(Long id) {
-		return new StringBuilder("Estudante com o id: ").append(id).append(" não foi encontrado.").toString();
+		return "Estudante com o id: " + id + " não foi encontrado.";
 	}
 }
